@@ -56,6 +56,7 @@ function App() {
       socket.emit('pong', { id: socket.id, message: 'pong' })
     }, 3000);
     socket&&socket.on("addednotif", ({id, text, user, date, type})=>{
+      console.log({date, nowDate:new Date()})
       dispatch(addNotif({id, text, user, date, type}))
     })
     socket&&socket.on("delnotif", ({id,})=>{
