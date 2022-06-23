@@ -38,7 +38,7 @@ function App() {
   }
   
   useEffect(()=>{
-    // setSocket(io.connect(serverUrl))
+    setSocket(io.connect(serverUrl))
     fetchNotif()
   }, [])
   useEffect(()=>{
