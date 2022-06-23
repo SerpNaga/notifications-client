@@ -20,6 +20,7 @@ const notifSlice = createSlice({
       },
       editNotif(state, action){
         const {id, user, text, date, type} = action.payload
+        console.log({id, user, text, date, type})
         state.notifications= state.notifications.map((el)=>el.id!==id?el:{
           id,
           user,
@@ -27,6 +28,7 @@ const notifSlice = createSlice({
           date,
           type
         })
+        console.log(state.notifications)
       },
       deleteNotif(state, action){
         const id = action.payload.id
