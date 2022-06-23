@@ -64,7 +64,7 @@ function App() {
       dispatch(deleteNotif({id}))
     })
     socket&&socket.on("editnotif", ({id, text, user, date, type})=>{
-      fetchNotif()
+      fetchNotif().then(console.log(notifications))
     })
   }, [socket])
   
