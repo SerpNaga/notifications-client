@@ -56,9 +56,7 @@ function App() {
       socket.emit('pong', { id: socket.id, message: 'pong' })
     }, 3000);
     socket&&socket.on("addednotif", ({id, text, user, date, type})=>{
-      date > new Date?
-      dispatch(addNotif({id, text, user, date, type})):
-      enqueueSnackbar(text, {variant:type.toLowerCase()})
+      dispatch(addNotif({id, text, user, date, type}))
     })
     socket&&socket.on("delnotif", ({id,})=>{
       dispatch(deleteNotif({id}))
