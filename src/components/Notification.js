@@ -13,9 +13,7 @@ import { deleteNotif, editNotif } from '../store/notifStore';
 import {useDispatch} from "react-redux"
 import axios from "axios"
 
-const serverUrl= "http://localhost:3001"
-
-function Notification({el, socket}) {
+function Notification({el, socket, serverUrl}) {
     const dispatch = useDispatch()
     
     const [isEdit, setIsEdit] = useState(false)

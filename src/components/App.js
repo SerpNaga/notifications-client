@@ -156,7 +156,7 @@ function App() {
         <Stack direction="column" gap={2} sx={{
           width:"fit-content"
         }}>
-          {notifications&&notifications.map(el=><Notification key={el.id} el={el} socket={socket}/>)}
+          {notifications&&notifications.map(el=><Notification key={el.id} el={el} socket={socket} serverUrl={serverUrl}/>)}
         </Stack>
       </Box>
     </SnackbarProvider>
