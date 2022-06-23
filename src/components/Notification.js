@@ -50,8 +50,8 @@ function Notification({el, socket, serverUrl}) {
             ntype:el.type
         }})
         .then(socket.emit("editnotif",{id:el.id, text, user:el.user, date:ndate, type:el.type}));
-        setNDate(dateTime).then(console.log({dateTime, date, ndate}))
-        console.log(dateTime)
+        setNDate(dateTime)
+        console.log({dateTime, date})
         setIsEdit(false)
     }
     const switchHandler = ()=>{
