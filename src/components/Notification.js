@@ -15,7 +15,7 @@ function Notification({el, socket, serverUrl}) {
     
     const [isEdit, setIsEdit] = useState(false)
     const [text, setText] = useState(el.text)
-    const [date, setDate] = useState(new Date(el.date))
+    const [date, setNDate] = useState(new Date(el.date))
     const [dateTime, setDateTime] = useState(date)
     const [type, setType] = useState(el.type)
     
@@ -50,7 +50,7 @@ function Notification({el, socket, serverUrl}) {
             ntype:el.type
         }})
         .then(socket.emit("editnotif",{id:el.id, text, user:el.user, date:ndate, type:el.type}));
-        setDate(dateTime).then(console.log({dateTime, date, ndate}))
+        setNDate(dateTime).then(console.log({dateTime, date, ndate}))
         console.log(dateTime)
         setIsEdit(false)
     }
