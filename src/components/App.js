@@ -16,8 +16,7 @@ import { useSnackbar } from 'notistack';
 
 import io from "socket.io-client"
 
-// const serverUrl= "https://serp-notifications-server.herokuapp.com"
-const serverUrl= "http://localhost:3001"
+const serverUrl= "https://serp-notifications-server.herokuapp.com"
 
 function App() {
   const {isLoggedIn, username} = useSelector((state) => state.logged)
