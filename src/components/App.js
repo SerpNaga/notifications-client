@@ -65,6 +65,7 @@ function App() {
     })
     socket&&socket.on("editnotif", ({id, text, user, date, type})=>{
       dispatch(editNotif({id, text, user, date, type}))
+      console.log(notifications)
     })
   }, [socket])
   
