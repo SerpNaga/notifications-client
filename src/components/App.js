@@ -39,6 +39,7 @@ function App() {
   
   useEffect(()=>{
     setSocket(io.connect("https://serp-notifications-server.herokuapp.com"))
+    console.log(io.connect("https://serp-notifications-server.herokuapp.com"))
     fetchNotif()
   }, [])
   useEffect(()=>{
