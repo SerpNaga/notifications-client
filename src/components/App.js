@@ -110,7 +110,7 @@ function App() {
         }}>
           <TextField onChange={textHandler} value={text} id="outlined-basic" label="Text" variant="outlined"/>
           <FormControl>
-            <InputLabel id="demo-simple-select-label">Type</InputLabel>
+            <InputLabel>Type</InputLabel>
             <Select
               defaultValue={"Success"}
               value={type}
