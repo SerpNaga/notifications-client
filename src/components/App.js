@@ -97,6 +97,10 @@ function App() {
       .then(res=>
           socket.emit("addnotif", {id:res.data.id, text, user:username, date:isInstant?new Date():dateTime, type})
         )
+      setText("")
+      setDateTime(new Date())
+      setIsInstant(true)
+      setType("Success")
     }
   }
   
