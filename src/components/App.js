@@ -1,18 +1,18 @@
 import Login from "./Login";
 import Notification from "./Notification";
 import {Button, Box, TextField, Stack, FormControlLabel, Checkbox, FormControl,InputLabel, Select, MenuItem} from '@mui/material';
-import {SnackbarProvider} from "notistack"
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import ruLocale from 'date-fns/locale/ru';
-import { useSelector} from "react-redux"
+import { useSelector } from "react-redux"
 import "../styles/App.css"
 import { useEffect, useState } from "react";
 import {logOut} from "../store/loggedStore"
 import {useDispatch} from "react-redux"
 import axios from "axios"
-import { addNotif, getNotif } from "../store/notifStore";
+import { addNotif, getNotif, deleteNotif, editNotif } from "../store/notifStore";
+import { useSnackbar } from 'notistack';
 
 import io from "socket.io-client"
 
@@ -21,6 +21,7 @@ const serverUrl= "https://serp-notifications-server.herokuapp.com"
 function App() {
   const {isLoggedIn, username} = useSelector((state) => state.logged)
   const {notifications} = useSelector((state) => state.notif)
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const dispatch = useDispatch()
 
@@ -29,6 +30,14 @@ function App() {
   const [dateTime, setDateTime] = useState(new Date())
   const [type, setType] = useState("Success")
   
+  const showNotif=(el)=>{
+    enqueueSnackbar(el.text, {variant:el.type.toLowerCase()})
+    deleteHandler(el.id)
+  }
+  const deleteHandler = (id)=>{
+    axios.delete(`${serverUrl}/api/notifications/${id}`)
+    .then(res=>socket.emit("delnotif", {id}))
+  }
   
   const [socket, setSocket] = useState(null)
   
@@ -39,7 +48,6 @@ function App() {
   
   useEffect(()=>{
     setSocket(io.connect("https://serp-notifications-server.herokuapp.com"))
-    console.log(io.connect("https://serp-notifications-server.herokuapp.com"))
     fetchNotif()
   }, [])
   useEffect(()=>{
@@ -49,6 +57,12 @@ function App() {
     }, 3000);
     socket&&socket.on("addednotif", ({id, text, user, date, type})=>{
       dispatch(addNotif({id, text, user, date, type}))
+    })
+    socket&&socket.on("delnotif", ({id,})=>{
+      dispatch(deleteNotif({id}))
+    })
+    socket&&socket.on("editnotif", ({id, text, user, date, type})=>{
+        dispatch(editNotif({id, text, user, date, type}))
     })
   }, [socket])
   
@@ -90,7 +104,7 @@ function App() {
     !isLoggedIn?
       <Login socket={socket}/>
     :
-    <SnackbarProvider maxSnack={3}>
+    <>
       <Button sx={{
         marginTop:"20px",
         marginLeft:"20px"
@@ -156,10 +170,10 @@ function App() {
         <Stack direction="column" gap={2} sx={{
           width:"fit-content"
         }}>
-          {notifications&&notifications.map(el=><Notification key={el.id} el={el} socket={socket} serverUrl={serverUrl}/>)}
+          {notifications&&notifications.map(el=>new Date(el.date)>new Date()?<Notification key={el.id} el={el} socket={socket} serverUrl={serverUrl}/>:showNotif(el))}
         </Stack>
       </Box>
-    </SnackbarProvider>
+    </>
   );
 }
 

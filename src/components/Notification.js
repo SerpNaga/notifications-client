@@ -9,12 +9,9 @@ import ruLocale from 'date-fns/locale/ru';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { differenceInMilliseconds } from 'date-fns'
-import { deleteNotif, editNotif } from '../store/notifStore';
-import {useDispatch} from "react-redux"
 import axios from "axios"
 
 function Notification({el, socket, serverUrl}) {
-    const dispatch = useDispatch()
     
     const [isEdit, setIsEdit] = useState(false)
     const [text, setText] = useState(el.text)
@@ -37,18 +34,10 @@ function Notification({el, socket, serverUrl}) {
           clearTimeout(timeout) 
         };
       }, [date]);
-    useEffect(()=>{
-        socket&&socket.on("delnotif", ({id,})=>{
-            dispatch(deleteNotif({id}))
-          })
-        socket&&socket.on("editnotif", ({id, text, user, date, type})=>{
-            dispatch(editNotif({id, text, user, date, type}))
-        })
-    })
 
     const deleteHandler = ()=>{
         axios.delete(`${serverUrl}/api/notifications/${el.id}`)
-        .then(res=>socket.emit("delnotif", {id:el.id}))
+        .then(socket.emit("delnotif", {id:el.id}))
     }
     const editHandler = ()=>{
         const ndate = dateTime.toISOString()
@@ -90,7 +79,7 @@ function Notification({el, socket, serverUrl}) {
             <>
                     <TextField onChange={textHandler} value={text} id="outlined-basic" label="Text" variant="outlined"/>
                     <FormControl>
-                        <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                        <InputLabel>Type</InputLabel>
                         <Select
                         defaultValue={"Success"}
                         value={type}
@@ -109,7 +98,7 @@ function Notification({el, socket, serverUrl}) {
                         label="Date & time"
                         onChange={dateHandler}
                         value={dateTime}
-                        mindate={new Date()}
+                        minDate={new Date()}
                         />
                     </LocalizationProvider>
                 </>
