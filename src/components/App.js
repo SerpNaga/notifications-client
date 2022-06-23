@@ -16,7 +16,8 @@ import { useSnackbar } from 'notistack';
 
 import io from "socket.io-client"
 
-const serverUrl= "https://serp-notifications-server.herokuapp.com"
+// const serverUrl= "https://serp-notifications-server.herokuapp.com"
+const serverUrl= "http://localhost:3001"
 
 function App() {
   const {isLoggedIn, username} = useSelector((state) => state.logged)
@@ -47,7 +48,7 @@ function App() {
   }
   
   useEffect(()=>{
-    setSocket(io.connect("https://serp-notifications-server.herokuapp.com"))
+    setSocket(io.connect(serverUrl))
     fetchNotif()
   }, [])
   useEffect(()=>{
@@ -89,8 +90,8 @@ function App() {
       alert("Please enter notification text")
     }else{
       axios.post(`${serverUrl}/api/notifications`, {}, {headers:{
-        text,
-        user:username,
+        text:encodeURIComponent(text),
+        user:encodeURIComponent(username),
         ndate:isInstant?new Date():dateTime,
         ntype:type
       }})

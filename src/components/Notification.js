@@ -44,8 +44,8 @@ function Notification({el, socket, serverUrl}) {
         text===""?
         alert("Enter text"):
         axios.put(`${serverUrl}/api/notifications/${el.id}`, {}, {headers:{
-            text,
-            user:el.user,
+            text:encodeURIComponent(text),
+            user:encodeURIComponent(el.user),
             ndate,
             ntype:el.type
         }})
